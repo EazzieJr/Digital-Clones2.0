@@ -1,10 +1,8 @@
-<script setup lang="ts">
-import type { Media, MediaType } from '~/types'
-
-defineProps<{
-  type: MediaType
-  item: Media
-}>()
+<script setup>
+defineProps({
+  item: Object,
+  type: String,
+})
 </script>
 
 <template>
@@ -17,14 +15,15 @@ defineProps<{
       transition duration-400
       hover="scale-105 z10"
     >
-      <NuxtImg
-        v-if="item.poster_path"
+      <video
+        v-if="item.image"
         width="400"
         height="600"
-        format="webp"
-        :src="`/tmdb${item.poster_path}`"
+        class="object-cover w-full h-full" 
+        autoplay muted loop playsinline
+        :poster="item.image"
+        src="/videos/placeholder.mp4"
         :alt="item.title || item.name"
-        w-full h-full object-cover
         :style="{ 'view-transition-name': `item-${item.id}` }"
       />
       <div v-else h-full op10 flex>
@@ -34,11 +33,11 @@ defineProps<{
     <div mt-2>
       {{ item.title || item.name }}
     </div>
-    <div flex text-sm gap-2 items-center>
+    <!-- <div flex text-sm gap-2 items-center>
       <StarsRate w-20 :value="item.vote_average" />
       <div op60>
         {{ formatVote(item.vote_average) }}
       </div>
-    </div>
+    </div> -->
   </NuxtLink>
 </template>

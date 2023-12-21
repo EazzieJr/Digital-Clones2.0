@@ -10,6 +10,50 @@ const queries = computed(() => [
   QUERY_LIST.tv[0],
 ])
 
+
+const characters = [
+  {
+    title: 'Popular Characters',
+    data: [
+      { name: 'Elon Musk', image: '/placeholder.webp' },
+      { name: 'Jeff Bezos', image: '/placeholder.webp' },
+      { name: 'Oprah Winfrey', image: '/placeholder.webp' },
+      { name: 'Dwayne Johnson', image: '/placeholder.webp' },
+      { name: 'Beyoncé', image: '/placeholder.webp' },
+      { name: 'Leonardo DiCaprio', image: '/placeholder.webp' },
+      { name: 'Taylor Swift', image: '/placeholder.webp' },
+      { name: 'Cristiano Ronaldo', image: '/placeholder.webp' },
+      { name: 'Serena Williams', image: '/placeholder.webp' },
+      { name: 'Kanye West', image: '/placeholder.webp' },
+      { name: 'Emma Watson', image: '/placeholder.webp' },
+      { name: 'Tom Hanks', image: '/placeholder.webp' },
+      { name: 'Ellen DeGeneres', image: '/placeholder.webp' },
+      { name: 'David Beckham', image: '/placeholder.webp' },
+      { name: 'Rihanna', image: '/placeholder.webp' },
+    ]
+  },
+  {
+    title: 'Most rated Characters',
+    data: [
+      { name: 'Elon Musk', image: '/placeholder.webp' },
+      { name: 'Jeff Bezos', image: '/placeholder.webp' },
+      { name: 'Oprah Winfrey', image: '/placeholder.webp' },
+      { name: 'Dwayne Johnson', image: '/placeholder.webp' },
+      { name: 'Beyoncé', image: '/placeholder.webp' },
+      { name: 'Leonardo DiCaprio', image: '/placeholder.webp' },
+      { name: 'Taylor Swift', image: '/placeholder.webp' },
+      { name: 'Cristiano Ronaldo', image: '/placeholder.webp' },
+      { name: 'Serena Williams', image: '/placeholder.webp' },
+      { name: 'Kanye West', image: '/placeholder.webp' },
+      { name: 'Emma Watson', image: '/placeholder.webp' },
+      { name: 'Tom Hanks', image: '/placeholder.webp' },
+      { name: 'Ellen DeGeneres', image: '/placeholder.webp' },
+      { name: 'David Beckham', image: '/placeholder.webp' },
+      { name: 'Rihanna', image: '/placeholder.webp' },
+    ]
+  }
+]
+
 const AsyncWrapper = defineComponent({
   name: 'AsyncWrapper',
   async setup(_, ctx) {
@@ -27,11 +71,8 @@ const AsyncWrapper = defineComponent({
         <MediaHero :item="item" />
       </NuxtLink>
     </AsyncWrapper>
-    <CarouselAutoQuery
-      v-for="query of queries"
-      :key="query.type + query.query"
-      :query="query"
-    />
-    <TheFooter />
+
+    <CarouselAutoQuery v-for="character of characters" :key="character.title" :query="character" />
+    <!-- <TheFooter /> -->
   </div>
 </template>

@@ -26,11 +26,10 @@ const mounted = useMounted()
       lt-lg="left-0"
       lg="bottom-0 left-1/3"
     >
-      <NuxtImg
+      <img
         width="1220"
         height="659"
-        format="webp"
-        :src="`/tmdb${props.item.backdrop_path}`"
+        :src="`/placeholder.webp`"
         :alt="props.item.title || props.item.name"
         h-full w-full object-cover
       />
@@ -45,7 +44,7 @@ const mounted = useMounted()
       <Transition appear name="hero">
         <div v-show="mounted">
           <h1 mt-2 text-4xl lg:text-5xl line-clamp-2>
-            {{ props.item.title || props.item.name }}
+            Emily
           </h1>
           <div flex="~ row wrap" gap2 items-center mt4>
             <StarsRate w-25 :value="props.item.vote_average" />
@@ -66,7 +65,7 @@ const mounted = useMounted()
             </div>
           </div>
           <p class="mt-2 op80 leading-relaxed of-hidden line-clamp-3 md:line-clamp-5 text-xs md:text-base">
-            {{ props.item.overview }}
+            Emily, an AI companion, brings smart assistance with a touch of personality. She's designed to make interactions intelligent and enjoyable, offering a unique blend of technology and warmth.
           </p>
           <div v-if="trailer" class="py5 display-none lg:block">
             <button
@@ -76,7 +75,7 @@ const mounted = useMounted()
               @click="playTrailer()"
             >
               <div i-ph-play />
-              {{ $t('Watch Trailer') }}
+              Chat with me
             </button>
           </div>
         </div>
