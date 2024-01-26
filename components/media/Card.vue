@@ -1,8 +1,26 @@
-<script setup>
-defineProps({
-  item: Object,
-  type: String,
-})
+<script>
+
+export default {
+  props: {
+    item: Object,
+    type: String,
+  },
+
+  methods: {
+    hover(e) {
+      const video = e.target
+
+      video.play()
+    },
+
+    leave(e) {
+      const video = e.target
+
+      video.pause()
+      video.currentTime = 0
+    },
+  },
+}
 </script>
 
 <template>
@@ -20,11 +38,13 @@ defineProps({
         width="400"
         height="600"
         class="object-cover w-full h-full" 
-        autoplay muted loop playsinline
+        muted loop playsinline
         :poster="item.image"
         src="/videos/placeholder.mp4"
         :alt="item.title || item.name"
         :style="{ 'view-transition-name': `item-${item.id}` }"
+        @mouseenter="hover($event)"
+        @mouseout="leave($event)"
       />
       <div v-else h-full op10 flex>
         <div i-ph:question ma text-4xl />
