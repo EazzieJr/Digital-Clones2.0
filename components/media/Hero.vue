@@ -11,6 +11,9 @@ const props = withDefaults(defineProps<{
 const trailer = computed(() => getTrailer(props.item))
 
 const showModal = useIframeModal()
+const checkAuth = () => {
+  console.log('checkAuth')
+ }
 function playTrailer() {
   if (trailer.value)
     showModal(trailer.value)
@@ -20,18 +23,17 @@ const mounted = useMounted()
 </script>
 
 <template>
-  <div :key="item.id" relative class="aspect-ratio-3/2 lg:aspect-ratio-25/9" bg-black>
+  <div :key="item.id" relative class="aspect-ratio-3/2 lg:aspect-ratio-25/9 overflow-hidden h-[500px] lg:h-auto" bg-black>
     <div
       absolute top-0 right-0
       lt-lg="left-0"
       lg="bottom-0 left-1/3"
+      overflow-hidden
     >
       <img
-        width="1220"
-        height="659"
+        class="h-fit"
         :src="`/placeholder.webp`"
         :alt="props.item.title || props.item.name"
-        h-full w-full object-cover
       />
     </div>
     <div
@@ -72,7 +74,7 @@ const mounted = useMounted()
               flex="~ gap2" items-center p="x6 y3"
               bg="gray/15 hover:gray/20" transition
               :title="$t('Watch Trailer')"
-              @click="playTrailer()"
+              @click="checkAuth()"
             >
               <div i-ph-play />
               Chat with me

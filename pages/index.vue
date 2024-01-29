@@ -67,9 +67,9 @@ const AsyncWrapper = defineComponent({
 <template>
   <div>
     <AsyncWrapper v-slot="{ item }">
-      <NuxtLink :to="`/${type}/${item.id}`">
+      <!-- <NuxtLink :to="`/${type}/${item.id}`"> -->
         <MediaHero :item="item" />
-      </NuxtLink>
+      <!-- </NuxtLink> -->
     </AsyncWrapper>
 
     <CarouselAutoQuery v-for="character of characters" :key="character.title" :query="character" />

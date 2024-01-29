@@ -4,7 +4,7 @@
     justify-evenly items-center
     py5 lg:px5
     border="t lg:r base"
-    bg-black
+    bg-black hidden
   >
     <NuxtLink v-slot="{ isActive }" to="/" title="Home">
       <div

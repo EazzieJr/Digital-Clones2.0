@@ -6,19 +6,22 @@ const isDev = process.env.NODE_ENV === 'development'
 const apiBaseUrl = 'https://movies-proxy.vercel.app'
 
 export default defineNuxtConfig({
-  modules: [
-    '@vueuse/nuxt',
-    '@unocss/nuxt',
-    '@nuxt/image',
-    '@nuxtjs/i18n',
-  ],
+  modules: ["@vueuse/nuxt", "@unocss/nuxt", "@nuxt/image", "@nuxtjs/i18n"],
+  css: ["@/assets/tailwind/index.css"],
+  postcss: {
+    plugins: {
+      "tailwindcss/nesting": {},
+      tailwindcss: {},
+      autoprefixer: {},
+    },
+  },
   experimental: {
     inlineSSRStyles: false,
     viewTransition: true,
     renderJsonPayloads: true,
   },
   routeRules: {
-    '/**': isDev ? {} : { cache: { swr: true, maxAge: 120, staleMaxAge: 60, headersOnly: true } },
+    "/**": isDev ? {} : { cache: { swr: true, maxAge: 120, staleMaxAge: 60, headersOnly: true } },
   },
   runtimeConfig: {
     public: {
@@ -29,10 +32,10 @@ export default defineNuxtConfig({
     enabled: true,
   },
   image: {
-    provider: 'proxy',
+    provider: "proxy",
     providers: {
       proxy: {
-        provider: 'ipx',
+        provider: "ipx",
         options: {
           baseURL: `${apiBaseUrl}/ipx`,
         },
@@ -41,54 +44,54 @@ export default defineNuxtConfig({
   },
   nitro: {
     routeRules: {
-      '/**': { isr: false },
+      "/**": { isr: false },
     },
   },
   i18n: {
     detectBrowserLanguage: {
       useCookie: true,
-      fallbackLocale: 'en',
+      fallbackLocale: "en",
     },
-    strategy: 'no_prefix',
+    strategy: "no_prefix",
     locales: [
       {
-        code: 'en',
-        name: 'English',
-        file: 'en.json',
+        code: "en",
+        name: "English",
+        file: "en.json",
       },
       {
-        code: 'de-DE',
-        name: 'Deutsch',
-        file: 'de-DE.json',
+        code: "de-DE",
+        name: "Deutsch",
+        file: "de-DE.json",
       },
       {
-        code: 'es-ES',
-        name: 'Español',
-        file: 'es-ES.json',
+        code: "es-ES",
+        name: "Español",
+        file: "es-ES.json",
       },
       {
-        code: 'ja',
-        name: '日本語',
-        file: 'ja.json',
+        code: "ja",
+        name: "日本語",
+        file: "ja.json",
       },
       {
-        code: 'zh-CN',
-        name: '简体中文',
-        file: 'zh-CN.json',
+        code: "zh-CN",
+        name: "简体中文",
+        file: "zh-CN.json",
       },
       {
-        code: 'pt-PT',
-        name: 'Português',
-        file: 'pt-PT.json',
+        code: "pt-PT",
+        name: "Português",
+        file: "pt-PT.json",
       },
       {
-        code: 'pt-BR',
-        name: 'Português do Brasil',
-        file: 'pt-BR.json',
+        code: "pt-BR",
+        name: "Português do Brasil",
+        file: "pt-BR.json",
       },
     ],
     lazy: true,
-    langDir: 'internationalization',
-    defaultLocale: 'en',
+    langDir: "internationalization",
+    defaultLocale: "en",
   },
-})
+});
