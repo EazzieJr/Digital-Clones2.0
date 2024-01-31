@@ -94,4 +94,8 @@ export default defineNuxtConfig({
     langDir: "internationalization",
     defaultLocale: "en",
   },
+
+  build: {
+    transpile: ["vue-toastification"],
+  },
 });

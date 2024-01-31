@@ -1,6 +1,6 @@
 <template>
 	<nav class="bg-[#19213D] bg-opacity-0">
-		<div class="NavContainer constraint items-center" :class="innerPage ? 'grid grid-cols-12' : 'between'">
+		<div class="NavContainer items-center" :class="innerPage ? 'grid grid-cols-12' : 'between'">
 			<div class="Logo h-fit" :class="innerPage ? 'col-span-3' : ''">
 				<nuxt-link to="/">LOGO</nuxt-link>
 			</div>
@@ -69,20 +69,25 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapState } from 'pinia'
 import { getAuth, signOut } from "firebase/auth";
-// import { initializeApp } from "firebase/app";
-// import { getAnalytics } 
+import { useStore } from '~/store'
+import { initializeApp } from "firebase/app";
+// import { useToast } from 'vue-toastification'
+// import { useToast } from "vue-toastification/composition/nuxt"
+// import { getAnalytics } from ""
 
 export default {
 	data() {
 		return {
-			popup: false
+			popup: false,
+			store: useStore(),
+			// toast: useToast()
 		}
 	},
 
 	computed: {
-		...mapState(['mode', 'innerPage', 'user'])
+		...mapState(useStore, ['mode', 'innerPage', 'user'])
 	},
 
 	watch: {
@@ -93,34 +98,19 @@ export default {
 	},
 
 	methods: {
-		...mapMutations(['setMode', 'toggleInnerPage', 'toggleSignInModal', 'userSignedIn', 'setUserData']),
+		// ...mapMutations(['setMode', 'toggleInnerPage', 'toggleSignInModal', 'userSignedIn', 'setUserData']),
 
-		toggle() {
-			console.log('toggle')
+		toggleSignInModal() {
+			this.store.$patch({
+				showSignInModal: !this.showSignInModal
+			})
 		},
 
-		// initFirebase() {
-		// 	// Import the functions you need from the SDKs you need
-
-		// 	// TODO: Add SDKs for Firebase products that you want to use
-		// 	// https://firebase.google.com/docs/web/setup#available-libraries
-
-		// 	// Your web app's Firebase configuration
-		// 	// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-		// 	const firebaseConfig = {
-		// 		apiKey: "AIzaSyCjYc7mXO5H9ubVrRBzFZ1aODeu2dfbOgQ",
-		// 		authDomain: "digital-clones.firebaseapp.com",
-		// 		projectId: "digital-clones",
-		// 		storageBucket: "digital-clones.appspot.com",
-		// 		messagingSenderId: "116349228769",
-		// 		appId: "1:116349228769:web:e9c0820b696c63e67149a0",
-		// 		measurementId: "G-0DSD8YVMF5"
-		// 	};
-
-		// 	// Initialize Firebase
-		// 	const app = initializeApp(firebaseConfig);
-		// 	const analytics = getAnalytics(app);
-		// },
+		setMode(mode) {
+			this.store.$patch({
+				mode
+			})
+		},
 
 		checkUserAuth() {
 			const storedUser = localStorage.getItem("user");
@@ -141,37 +131,15 @@ export default {
 			}
 		},
 
-		// async signIn() {
-		// 	const provider = new GoogleAuthProvider();
-		// 	const auth = getAuth();
-
-		// 	signInWithPopup(auth, provider)
-		// 		.then((result) => {
-		// 			const user = result.user;
-		// 			this.user.signedIn = true;
-		// 			this.user.data = user;
-		// 			localStorage.setItem("user", JSON.stringify(user));
-		// 			console.log(user.photoURL);
-		// 		})
-		// 		.catch((error) => {
-		// 			// Handle the error
-		// 			console.error("Authentication error:", error.code, error.message);
-
-		// 			// You may want to update your UI or show an error message to the user
-		// 			// For example, you can set this.user.signedIn to false and display an error message
-		// 			this.user.signedIn = false;
-		// 			this.errorMessage = error.message; // Assuming you have a variable to store the error message
-		// 		});
-		// },
-
 		async signOut() {
 			const auth = getAuth();
 			this.popup = false
 
 			signOut(auth).then(() => {
 				// Sign-out successful.
-				this.userSignedIn(false)
-				this.setUserData({})
+				this.store.$reset()
+				// this.toast.success("Signed out successfully")
+
 				localStorage.removeItem("user");
 			}).catch((error) => {
 				// An error happened.
@@ -187,6 +155,7 @@ export default {
 
 	mounted() {
 		this.checkUserAuth()
+		// console.log(useToast)
 		// this.initFirebase()
 	}
 }
@@ -198,10 +167,11 @@ nav {
 	top: 0px;
 	padding: 20px 0px;
 	backdrop-filter: blur(4px);
+	z-index: 100;
 }
 
 nav .NavContainer {
-	/* @apply grid grid-cols-10; */
+	padding: 0px 20px;
 }
 
 nav .NavContainer .Logo a {

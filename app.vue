@@ -3,6 +3,7 @@ import { GoogleAuthProvider, FacebookAuthProvider, TwitterAuthProvider, createUs
 import { initializeApp } from "firebase/app";
 import { mapState } from 'pinia'
 import { useStore } from '~/store'
+import { getAnalytics } from "firebase/analytics";
 import '@unocss/reset/tailwind.css'
 
 export default {
@@ -11,7 +12,8 @@ export default {
       email: '',
       password: '',
       tempUserData: null,
-      auth: 'Sign in'
+      auth: 'Sign in',
+      store: useStore(),
     }
   },
 
@@ -84,13 +86,19 @@ export default {
 
         // this.$toast.success("User successfully signed in!")
         // this.tempUserData = userData;
-        this.setUserData({
-          email, photoURL
+        this.store.$patch({
+          user: {
+            signedIn: true,
+            data: {
+              email, photoURL
+            }
+          },
+
+          showSignInModal: false,
         })
-        this.userSignedIn(true);
 
         localStorage.setItem("user", JSON.stringify(this.user));
-        this.toggleSignInModal(false);
+        // this.toggleSignInModal(false);
       } catch (error) {
         // Handle the error
         // this.$toast.error(error.message)
@@ -157,15 +165,12 @@ export default {
     async signUpWithEmail() {
       try {
         const auth = getAuth();
-        // const provider = new createUserWithEmailAndPassword();
-
-        // Open a popup to initiate the Facebook sign-in
         const result = await createUserWithEmailAndPassword(auth, this.email, this.password);
 
         // The signed-in user information
         const user = result.user;
 
-        this.$toast.success("User successfully signed up!")
+        // this.$toast.success("User successfully signed up!")
         this.auth = 'Sign in'
 
         console.log(user)
@@ -195,14 +200,24 @@ export default {
         // The signed-in user information
         const user = result.user;
 
-        this.setUserData({
-          email: this.email,
-          initial: this.email.split('')[0],
+        this.store.$patch({
+          user: {
+            signedIn: true,
+            data: {
+              email: this.email,
+              initial: this.email.split('')[0],
+            }
+          },
+
+          showSignInModal: false,
         })
 
         this.$toast.success("User successfully signed in!")
-        this.userSignedIn(true);
-        this.toggleSignInModal(false);
+        // this.store.$patch({
+        //   showSignInModal: false,
+        //   user
+        // });
+        // this.toggleSignInModal(false);
         localStorage.setItem("user", JSON.stringify(this.user));
 
         console.log(this.user)
@@ -211,7 +226,7 @@ export default {
 
       } catch (error) {
         // Handle errors during Facebook sign-in
-        this.$toast.error(error.code && "User not found, Sign up?")
+        // this.$toast.error(error.code && "User not found, Sign up?")
         console.error(error.code, error.message);
 
         // You may want to update your UI or show an error message to the user
@@ -269,6 +284,9 @@ export default {
 
 <template>
   <NuxtLoadingIndicator />
+
+  <Navigation />
+  
   <div h-full w-full font-sans of-hidden view-transition-app transition duration-0>
     <div id="app-scroller" of-x-hidden of-y-auto relative>
       <NuxtPage />
@@ -331,7 +349,7 @@ export default {
 
             <img src="/svg/google.svg" alt="">
           </button>
-
+<!-- 
           <button class="center" @click="signInWithFacebook">
             <span>
               Sign In with Facebook
@@ -346,7 +364,7 @@ export default {
             </span>
 
             <img src="/svg/twitter.svg" alt="">
-          </button>
+          </button> -->
 
           <div v-if="auth == 'Sign in'">
             User not signed up? <button @click="auth = 'Sign up'">sign up.</button>
