@@ -6,7 +6,7 @@ const isDev = process.env.NODE_ENV === 'development'
 const apiBaseUrl = 'https://movies-proxy.vercel.app'
 
 export default defineNuxtConfig({
-  modules: ["@vueuse/nuxt", "@unocss/nuxt", "@nuxt/image", "@nuxtjs/i18n"],
+  modules: ["@vueuse/nuxt", "@unocss/nuxt", "@nuxt/image", "@nuxtjs/i18n", "@pinia/nuxt"],
   css: ["@/assets/tailwind/index.css"],
   postcss: {
     plugins: {

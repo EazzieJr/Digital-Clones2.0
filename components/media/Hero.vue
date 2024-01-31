@@ -1,12 +1,17 @@
 <script setup lang="ts">
+import { useStore } from '~/store/'
 import type { Media } from '~/types'
 import { formatTime } from '~/composables/utils'
+
 
 const props = withDefaults(defineProps<{
   item: Media
 }>(), {
   item: () => ({} as Media),
 })
+
+const state = useStore()
+console.log(state.counter)
 
 const trailer = computed(() => getTrailer(props.item))
 

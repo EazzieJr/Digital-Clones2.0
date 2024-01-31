@@ -2,6 +2,9 @@
   "type": "module",
   "private": true,
   "packageManager": "pnpm@8.11.0",
+  "overrides": {
+    "vue": "latest"
+  },
   "scripts": {
     "build": "nuxi build",
     "dev": "nuxi dev",
@@ -12,7 +15,9 @@
     "typecheck": "vue-tsc --noEmit"
   },
   "dependencies": {
+    "@pinia/nuxt": "^0.5.1",
     "firebase": "^10.7.2",
+    "pinia": "^2.1.7",
     "vue-router-better-scroller": "^0.0.0"
   },
   "devDependencies": {
