@@ -97,7 +97,7 @@ export default {
           showSignInModal: false,
         })
 
-        localStorage.setItem("user", JSON.stringify(this.user));
+        localStorage.setItem("user", JSON.stringify(this.store.user));
         // this.toggleSignInModal(false);
       } catch (error) {
         // Handle the error
@@ -291,11 +291,11 @@ export default {
     <div id="app-scroller" of-x-hidden of-y-auto relative>
       <NuxtPage />
     </div>
-    <NavBar />
-    <IframeModal />
-    <PhotoModal />
+    <!-- <NavBar /> -->
+    <!-- <IframeModal /> -->
+    <!-- <PhotoModal /> -->
 
-    <div class="Modal center" v-if="showSignInModal">
+    <!-- <div class="Modal center" v-if="showSignInModal">
       <div class="Popup">
         <h2>
           {{ auth }}
@@ -349,29 +349,13 @@ export default {
 
             <img src="/svg/google.svg" alt="">
           </button>
-<!-- 
-          <button class="center" @click="signInWithFacebook">
-            <span>
-              Sign In with Facebook
-            </span>
-
-            <img src="/svg/facebook.svg" alt="">
-          </button>
-
-          <button class="center" @click="signInWithTwitter">
-            <span>
-              Sign In with Twitter
-            </span>
-
-            <img src="/svg/twitter.svg" alt="">
-          </button> -->
 
           <div v-if="auth == 'Sign in'">
             User not signed up? <button @click="auth = 'Sign up'">sign up.</button>
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -379,7 +363,6 @@ export default {
 html,
 body,
 #__nuxt {
-  height: 100vh;
   margin: 0;
   padding: 0;
   background: #111;

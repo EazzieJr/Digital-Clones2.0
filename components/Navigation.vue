@@ -31,7 +31,7 @@
 				</button>
 			</div>
 
-			<div class="end relative" :class="innerPage ? 'col-span-3' : ''" v-clickaway="togglePopup">
+			<div class="end relative" :class="innerPage ? 'col-span-3' : ''">
 				<button
 					class="Signin rounded-xl py-2.5 px-4 w-fit text-sm font-medium border border-[#CDD4F033] border-opacity-20 text-[#CDD4F0] duration-500 hover:bg-[#CDD4F033] bg-opacity-20"
 					@click="toggleSignInModal" v-if="!user.signedIn">
@@ -99,6 +99,11 @@ export default {
 
 	methods: {
 		// ...mapMutations(['setMode', 'toggleInnerPage', 'toggleSignInModal', 'userSignedIn', 'setUserData']),
+		toggleInnerPage() {
+			this.store.$patch({
+				innerPage: !innerPage
+			})
+		},
 
 		toggleSignInModal() {
 			this.store.$patch({
@@ -114,14 +119,20 @@ export default {
 
 		checkUserAuth() {
 			const storedUser = localStorage.getItem("user");
-
-			if (storedUser) {
+			console.log("storedUser:", storedUser)
+			if (storedUser !== null && storedUser !== undefined) {
+				console.log("storedUser:", storedUser)
 				// Parse the stored user information
 				const parsedUser = JSON.parse(storedUser);
 
 
-				this.userSignedIn(true)
-				this.setUserData(parsedUser)
+				this.store.$patch({
+					user: {
+						signedIn: true,
+						data: parsedUser
+					}
+				})
+				
 				// this.user = {
 				// 	signedIn: true,
 				// 	data: parsedUser
