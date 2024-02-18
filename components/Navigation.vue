@@ -39,7 +39,7 @@
 				</button>
 
 				<button class="center w-10 h-10 overflow-hidden rounded-full"
-					:class="{ 'bg-[#9D67BA]': user.data.initial && !user.data.photoURL }" @click="popup = !popup"
+					:class="{ 'bg-[#9D67BA]': user.data.initial || !user.data.photoURL }" @click="popup = !popup"
 					v-if="user.data.initial || user.data.photoURL">
 					<img :src="user.data.photoURL" v-if="user.signedIn && user.data.photoURL" />
 
@@ -109,7 +109,7 @@ export default {
 
 		toggleSignInModal() {
 			this.store.$patch({
-				showSignInModal: !this.showSignInModal
+				showSignInModal: !this.store.$state.showSignInModal
 			})
 		},
 
@@ -121,19 +121,18 @@ export default {
 
 		checkUserAuth() {
 			const storedUser = localStorage.getItem("user");
-			console.log("storedUser:", storedUser)
+
 			if (storedUser !== null && storedUser !== undefined) {
-				console.log("storedUser:", storedUser)
+				console.log("Previously logged:", storedUser)
 				// Parse the stored user information
 				const parsedUser = JSON.parse(storedUser);
 
 
 				this.store.$patch({
-					user: {
-						signedIn: true,
-						data: parsedUser
-					}
+					user: parsedUser
 				})
+
+				console.log(this.store.$state.user.data)
 				
 				// this.user = {
 				// 	signedIn: true,

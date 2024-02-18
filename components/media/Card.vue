@@ -1,9 +1,16 @@
 <script>
+import { useStore } from '~/store'
 
 export default {
   props: {
     item: Object,
     type: String,
+  },
+
+  data() {
+    return {
+      store: useStore()
+    }
   },
 
   methods: {
@@ -19,12 +26,20 @@ export default {
       video.pause()
       video.currentTime = 0
     },
+
+    pushRoute(data) {
+      if (this.store.$state.user.signedIn) {
+        this.$router.push(`/clone/${data}`)
+      } else {
+        this.store.$state.showSignInModal = true
+      }
+    }
   },
 }
 </script>
 
 <template>
-  <NuxtLink :to="`/clone/${item.name.toLowerCase().split(' ').join('-')}`" pb2>
+  <div @click="pushRoute(item.name.toLowerCase().split(' ').join('-'))" pb2>
     <div block bg-gray4:10 p1 class="aspect-10/16" transition duration-400 hover="scale-105 z10">
       <video v-if="item.image" width="400" height="600" class="object-cover w-full h-full" muted loop playsinline
         :poster="item.image" src="/videos/placeholder.mp4" :alt="item.title || item.name" @mouseenter="hover($event)"
@@ -42,5 +57,5 @@ export default {
         {{ formatVote(item.vote_average) }}
       </div>
     </div> -->
-  </NuxtLink>
+  </div>
 </template>

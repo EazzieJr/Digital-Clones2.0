@@ -30,7 +30,7 @@ export default {
   computed: {
     ...mapState(useStore, ['showSignInModal'])
   },
-  
+
   methods: {
     initFirebase() {
       // Import the functions you need from the SDKs you need
@@ -258,38 +258,78 @@ export default {
     this.checkUserAuth()
   }
 }
-// useHead({
-//   htmlAttrs: {
-//     lang: 'en',
-//   },
-//   charset: 'utf-8',
-//   title: 'Nuxt Movies',
-//   titleTemplate: title => title !== 'Nuxt Movies' ? `${title} · Nuxt Movies` : title,
-//   meta: [
-//     { name: 'description', content: 'A TMDB client built with Nuxt Image to show the potential of it ✨' },
-//     { property: 'og:image', content: 'https://movies.nuxt.space/social-card.png' },
-//     { name: 'twitter:card', content: 'summary_large_image' },
-//     { name: 'twitter:site', content: '@nuxt_js' },
-//     { name: 'twitter:creator', content: '@nuxt_js' },
-//   ],
-//   link: [
-//     {
-//       rel: 'icon',
-//       type: 'image/webp',
-//       href: '/movies.webp',
-//     },
-//   ],
-// })
 </script>
 
 <template>
   <NuxtLoadingIndicator />
 
   <Navigation />
-  
+
   <div h-full w-full font-sans of-hidden view-transition-app transition duration-0>
     <div id="app-scroller" of-x-hidden of-y-auto relative>
       <NuxtPage />
+    </div>
+  </div>
+
+  <div class="Modal center" v-if="showSignInModal">
+    <div class="Popup">
+      <h2>
+        {{ auth }}
+      </h2>
+
+      <form @submit.prevent="signInWithEmail" v-if="auth == 'Sign in'">
+        <div class="Inputs">
+          <div class="Input">
+            <span>Email</span>
+
+            <input type="email" v-model="email" placeholder="Jondoe@jane.doe">
+          </div>
+
+          <div class="Input">
+            <span>Password</span>
+
+            <input type="password" v-model="password" placeholder="Input password">
+          </div>
+        </div>
+
+        <button class="Submit">
+          Sign In
+        </button>
+      </form>
+
+      <form @submit.prevent="signUpWithEmail" v-else>
+        <div class="Inputs">
+          <div class="Input">
+            <span>Email</span>
+
+            <input type="email" v-model="email" placeholder="Jondoe@jane.doe">
+          </div>
+
+          <div class="Input">
+            <span>Password</span>
+
+            <input type="password" v-model="password" placeholder="Input password">
+          </div>
+        </div>
+
+        <button class="Submit">
+          Sign up
+        </button>
+      </form>
+
+      <div class="OtherSignInOptions" v-if="auth == 'Sign in'">
+        <button class="center" @click="signInWithGoogle">
+          <span>
+            Sign In with Google
+          </span>
+
+          <img src="/svg/google.svg" alt="">
+        </button>
+
+        <div v-if="auth == 'Sign in'">
+          User not signed up? <button @click="auth = 'Sign up'">sign up.</button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -343,7 +383,7 @@ body,
     .OtherSignInOptions {
       @apply space-y-3 mt-8 w-full;
 
-      > button {
+      >button {
         @apply w-full md:w-4/5 rounded-lg bg-[#19213D] border border-[#CDD4F0] border-opacity-20 text-[#CDD4F0] text-sm font-medium px-4 py-2.5 flex items-center space-x-2 hover:bg-[#CDD4F033] bg-opacity-20 mx-auto;
 
         img {
