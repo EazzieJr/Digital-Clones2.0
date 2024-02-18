@@ -27,8 +27,8 @@ export default {
   <NuxtLink :to="`/clone/${item.name.toLowerCase().split(' ').join('-')}`" pb2>
     <div block bg-gray4:10 p1 class="aspect-10/16" transition duration-400 hover="scale-105 z10">
       <video v-if="item.image" width="400" height="600" class="object-cover w-full h-full" muted loop playsinline
-        :poster="item.image" src="/videos/placeholder.mp4" :alt="item.title || item.name"
-        :style="{ 'view-transition-name': `item-${item.id}` }" @mouseenter="hover($event)" @mouseout="leave($event)" />
+        :poster="item.image" src="/videos/placeholder.mp4" :alt="item.title || item.name" @mouseenter="hover($event)"
+        @mouseout="leave($event)" />
       <div v-else h-full op10 flex>
         <div i-ph:question ma text-4xl />
       </div>

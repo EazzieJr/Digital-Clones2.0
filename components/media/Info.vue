@@ -24,9 +24,9 @@ const directors = computed(() => props.item.credits?.crew.filter(person => perso
       :alt="props.item.title || props.item.name"
       block border="4 gray4/10" w-79 lt-md:hidden
       transition duration-400 object-cover aspect="10/16"
-      :style="{ 'view-transition-name': `item-${props.item.id}` }"
-    />
-    <div lt-md:w="[calc(100vw-2rem)]" flex="~ col" md:p4 gap6>
+      />
+      <!-- :style="{ 'view-transition-name': `item-${props.item.name}` }" -->
+      <div lt-md:w="[calc(100vw-2rem)]" flex="~ col" md:p4 gap6>
       <div v-if="props.item.overview">
         <h2 text-3xl mb4>
           {{ $t('Storyline') }}

@@ -1,4 +1,5 @@
 <script>
+import { useStore } from '~/store'
 
 export default {
   data() {
@@ -45,9 +46,16 @@ export default {
             { name: 'Rihanna', image: '/placeholder.webp' },
           ]
         }
-      ]
+      ],
 
+      store: useStore()
     }
+  },
+
+  mounted() {
+    this.store.$patch({
+      innerPage: false
+    })
   }
 }
 

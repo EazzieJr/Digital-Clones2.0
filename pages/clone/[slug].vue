@@ -176,7 +176,8 @@ export default {
 				console.log(this.message)
 				const chatApi = `https://api.clonecraft.co/chat?msg=${temp}&cloneid=Emily`;
 				// const coinsImage = await axios.get(imageApi).then((res) => { return res.data});
-				const { data } = await this.$fetch(chatApi);
+				const { data } = await $fetch(chatApi);
+				console.log(data)
 				this.typing = false
 				this.messages.push({ text: data.answer, side: "left" })
 
@@ -305,7 +306,7 @@ section .ChatBox .Container .Message.left-msg {
 	background-color: #CDD4F0;
 
 	@media (min-width: 1024px) {
-		margin-top: 24px;
+		/* margin-top: 24px; */
 	}
 }
 
@@ -313,9 +314,10 @@ section .ChatBox .Container .Message.right-msg {
 	align-self: flex-end;
 	width: fit-content;
 	background-color: rgba(205, 212, 240, 0.20);
+	color: rgba(255, 255, 255, 0.9);
 
 	@media (min-width: 1024px) {
-		margin-top: 24px;
+		/* margin-top: 24px; */
 	}
 }
 

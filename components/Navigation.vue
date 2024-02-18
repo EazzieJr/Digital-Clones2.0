@@ -100,8 +100,10 @@ export default {
 	methods: {
 		// ...mapMutations(['setMode', 'toggleInnerPage', 'toggleSignInModal', 'userSignedIn', 'setUserData']),
 		toggleInnerPage() {
+			console.log(this.store.$state)
+			
 			this.store.$patch({
-				innerPage: !innerPage
+				innerPage: true
 			})
 		},
 
