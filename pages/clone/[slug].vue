@@ -6,26 +6,30 @@
 				<video src="/videos/placeholder.mp4" poster="/placeholder.webp" autoplay muted loop playsinline />
 			</div>
 
-			<div class="ChatBox" data-lenis-prevent>
+			<div class="ChatBox relative">
 				<div class="Container">
-					<div class="Message left-msg">
-						Hello, what can i do for you today?
+					<div class="Messages">
+						<div class="Message left-msg">
+							Hello, what can i do for you today?
+						</div>
+
+						<div v-for="(message, index) in messages" :key="index" :class="`Message ${message.side}-msg`">
+							{{ message.text }}
+						</div>
+
+						<div class="Message !py-[18px] left-msg Typing start" v-if="typing">
+							<div class="Circle"></div>
+							<div class="Circle"></div>
+							<div class="Circle"></div>
+						</div>
 					</div>
 
-					<div v-for="(message, index) in messages" :key="index" :class="`Message ${message.side}-msg`">
-						{{ message.text }}
+					<div class="Suggestions" v-if="showSuggestions">
+						<button class="Suggestion" v-for="(suggestion, index) in suggestions" :key="index"
+							@click="trySuggestion(suggestion)">
+							{{ suggestion }}
+						</button>
 					</div>
-
-					<div class="Message !py-[18px] left-msg Typing start" v-if="typing">
-						<div class="Circle"></div>
-						<div class="Circle"></div>
-						<div class="Circle"></div>
-					</div>
-					<!-- <div class="Message left-msg italic" v-if="typing">
-						<span class="animate-pulse">
-							Typing ...
-						</span>
-					</div> -->
 				</div>
 			</div>
 		</section>
@@ -59,6 +63,20 @@
 				</button>
 			</div>
 		</div>
+
+		<section class="Ask">
+			<div class="Container constraint">
+				<h4>
+					Preset Questions
+				</h4>
+
+				<div class="Questions">
+					<button class="Suggestion" v-for="(suggestion, index) in suggestions" :key="index" @click=trySuggestion(suggestion)>
+						{{ suggestion }}
+					</button>
+				</div>
+			</div>
+		</section>
 	</div>
 </template>
 
@@ -71,7 +89,14 @@ export default {
 		return {
 			recording: false,
 			typing: false,
+			showSuggestions: true,
 			messages: [],
+			suggestions: [
+				"Show me a code snippet",
+				"What services do you offer",
+				"Say Hello cause why not",
+				"Recommend a dish to impress a date who is a picky eater"
+			],
 			message: "",
 			previousSrc: "",
 			recognition: null
@@ -173,16 +198,18 @@ export default {
 			this.message = ""
 
 			try {
-				console.log(this.message)
+				// console.log(temp)
 				const chatApi = `https://api.clonecraft.co/chat?msg=${temp}&cloneid=Emily`;
 				// const coinsImage = await axios.get(imageApi).then((res) => { return res.data});
-				const { data } = await $fetch(chatApi);
-				console.log(data)
+				const data = await $fetch(chatApi);
+				// console.log(data)
 				this.typing = false
 				this.messages.push({ text: data.answer, side: "left" })
 
+				// console.log(this.messages)
+
 				// scroll to bototm 
-				const chatBox = document.querySelector('.ChatBox .Container')
+				const chatBox = document.querySelector('.ChatBox .Container .Messages')
 				chatBox.scrollTop = chatBox.scrollHeight
 
 				this.previousSrc = video.src
@@ -199,7 +226,17 @@ export default {
 				this.typing = false
 				console.error('Error fetching data:', error);
 			}
-		}
+		},
+
+		trySuggestion(suggestion) {
+			this.message = suggestion
+
+			if (this.showSuggestions) {
+				this.showSuggestions = false
+			}
+
+			this.sendMessage()
+		},
 	},
 
 	mounted() {
@@ -211,7 +248,8 @@ export default {
 <style lang="css" scoped>
 .Clone {
 	/* height: 100svh; */
-	overflow: hidden
+	overflow: hidden;
+	padding-bottom: 40px;
 }
 
 /* Section */
@@ -221,7 +259,7 @@ section {
 	justify-content: flex-start;
 	align-items: center;
 	/* height: calc(100dvh - 70px - 75px - 56px); */
-	max-width: 700px;
+	max-width: 660px;
 	margin: auto;
 	padding: 0px 20px;
 }
@@ -266,7 +304,7 @@ section .ChatBox .Container::-webkit-scrollbar-track {
 	border-radius: 10px;
 }
 
-section .ChatBox .Container {
+section .ChatBox .Container .Messages {
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-start;
@@ -392,13 +430,49 @@ section .ChatBox .Container .Message.right-msg {
 	animation-delay: 0.6s;
 }
 
+.Suggestions {
+	position: absolute;
+	width: 100%;
+	bottom: 20px;
+	display: grid;
+	grid-gap: 16px;
+	max-width: 660px;
+
+	@media (min-width: 768px) {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+.Suggestions .Suggestion {
+	padding: 12px 16px;
+	border-radius: 16px;
+	border: 1px solid #CDD4F0;
+	font-size: 14px;
+	color: #CDD4F0;
+	cursor: pointer;
+}
+
+.Suggestions .Suggestion:hover {
+	background-color: rgba(205, 212, 240, 0.20);
+}
+
+
+.Suggestions .Suggestion:nth-child(3),
+.Suggestions .Suggestion:nth-child(4) {
+	display: none;
+
+	@media (min-width: 768px) {
+		display: block;
+	}
+}
+
 /* Chat Input */
 .ChatInput {
-	position: fixed;
+	/* position: absolute; */
 	bottom: 20px;
 	left: 0px;
 	right: 0px;
-	max-width: 700px;
+	max-width: 660px;
 }
 
 .ChatInput .Record {
@@ -415,31 +489,6 @@ section .ChatBox .Container .Message.right-msg {
 	position: relative
 }
 
-/* .ChatInput .Record button.active::after {
-	content: 'Listening';
-	position: absolute;
-	color: black;
-	text-align: center;
-	font-weight: 500;
-	top: -50%;
-	left: -10%;
-	right: 0;
-	animation: blink 2s ease infinite;
-} */
-
-/* @keyframes blink {
-	0% {
-		opacity: 1;
-	}
-
-	50% {
-		opacity: 0;
-	}
-
-	100% {
-		opacity: 1;
-	}
-} */
 
 .ChatInput .Record button.active::before {
 	content: '';
@@ -504,5 +553,44 @@ section .ChatBox .Container .Message.right-msg {
 
 .ChatInput form .Input input::placeholder {
 	font-weight: 500;
+}
+
+
+/* Other Suggestions */
+section.Ask .Container {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	margin-top: 80px;
+	width: 100%;
+}
+
+section.Ask h4 {
+	font-size: 32px;
+	font-weight: 700;
+	color: #CDD4F0;
+	margin-bottom: 20px;
+}
+
+.Questions {
+	width: 100%;
+	max-width: 660px;
+}
+
+.Questions .Suggestion {
+	padding: 12px 16px;
+	border-radius: 16px;
+	border: 1px solid #CDD4F0;
+	font-size: 14px;
+	color: #CDD4F0;
+	cursor: pointer;
+	display: block;
+	width: 100%;
+	margin-top: 20px
+}
+
+.Suggestions .Suggestion:hover {
+	background-color: rgba(205, 212, 240, 0.20);
 }
 </style>
