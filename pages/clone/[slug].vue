@@ -209,8 +209,8 @@ export default {
 				// console.log(this.messages)
 
 				// scroll to bototm 
-				const chatBox = document.querySelector('.ChatBox .Container .Messages')
-				chatBox.scrollTop = chatBox.scrollHeight
+				const chatBox = document.querySelector('.ChatBox .Container')
+				chatBox.scrollTop += 1000
 
 				this.previousSrc = video.src
 				video.src = data.id
@@ -304,14 +304,20 @@ section .ChatBox .Container::-webkit-scrollbar-track {
 	border-radius: 10px;
 }
 
+section .ChatBox .Container {
+	height: 100%;
+	overflow-y: auto;
+}
+
 section .ChatBox .Container .Messages {
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-start;
 	height: 100%;
-	overflow-y: auto;
+	/* overflow-y: auto; */
 	overscroll-behavior: contain;
-	padding-bottom: 55px;
+	padding-bottom: 80px;
+	align-self: stretch;
 }
 
 section .ChatBox .Container .Message {
