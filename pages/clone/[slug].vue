@@ -314,7 +314,7 @@ section .ChatBox .Container .Messages {
 	flex-direction: column;
 	justify-content: flex-start;
 	height: 100%;
-	/* overflow-y: auto; */
+	/* overkflow-y: auto; */
 	overscroll-behavior: contain;
 	padding-bottom: 80px;
 	align-self: stretch;
